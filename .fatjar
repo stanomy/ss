@@ -1,0 +1,14 @@
+#Fat Jar Configuration File
+#Tue Mar 21 15:44:50 CST 2017
+onejar.license.required=true
+manifest.classpath=
+manifest.removesigners=true
+onejar.checkbox=false
+jarname=ss_fat.jar
+manifest.mergeall=true
+manifest.mainclass=ThreadMain
+manifest.file=<createnew>
+jarname.isextern=false
+onejar.expand=
+excludes=
+includes=
