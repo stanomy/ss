@@ -11,5 +11,10 @@ public class PushReq {
 	public void setS1(String s1) {
 		this.s1 = s1;
 	}
+
+	public PushReq(String s1) {
+		super();
+		this.s1 = s1;
+	}
 	
 }
