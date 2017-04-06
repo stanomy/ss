@@ -1,3 +1,5 @@
+package service;
+
 
 public class ThreadMain {
 	private Thread t;
