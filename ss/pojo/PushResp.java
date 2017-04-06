@@ -2,6 +2,13 @@ package pojo;
 
 public class PushResp {
 
+	private String code;
+	public String getCode() {
+		return code;
+	}
+	public void setCode(String code) {
+		this.code = code;
+	}
 	private String s1;
 	private String s2;
 	public String getS1() {
