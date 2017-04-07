@@ -6,6 +6,8 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Properties;
@@ -19,13 +21,17 @@ import util.ReMix;
 /**
  * //rsw=v_s_sh601212="1~xxxx~601212~15.59~0.32~2.10~2844191~435087~~1087.09";
  * 
- * @author yy
+ * @author stanomy
  *
  */
 public class PushServer {
 
+	// 请求
 	private static Map<String, URL> producerMap = new ConcurrentHashMap<String, URL>();
-	private static Map<String, PushResp> consumerMap = new ConcurrentHashMap<String, PushResp>();
+	// 响应结果
+	private static Map<String, List<PushResp>> consumerMap = new ConcurrentHashMap<String, List<PushResp>>();
+	// 显示
+	private static Map<String, PushResp> showMap = new ConcurrentHashMap<String, PushResp>();
 
 	public PushServer() {
 		super();
@@ -63,43 +69,51 @@ public class PushServer {
 		System.out.println(str);
 	}
 
-	public String[] json(String rs) {
-		StringBuilder t = null;
+	public void json(String rs) {
 		if (null != rs && !rs.isEmpty()) {
 			String[] rss = rs.split("~");
 			if (null != rss && rss.length > 6) {
 
 				if (consumerMap.containsKey(rss[2])) {
-					PushResp resp = consumerMap.get(rss[2]);
-					resp.setS1(rss[5]);
-					resp.setS2(rss[3]);
-					consumerMap.put(resp.getCode(), resp);
-				} else {
-					PushResp resp = new PushResp();
-					// t = new StringBuilder();
-					resp.setS1(rss[5]);
-					resp.setS2(rss[3]);
-					resp.setCode(rss[2]);
-					consumerMap.put(resp.getCode(), resp);
-				}
+					List<PushResp> resp = consumerMap.get(rss[2]);
+					final PushResp pushResp = new PushResp(rss[2], rss[5],
+							rss[3]);
+					pushResp.setS1(rss[5]);
+					pushResp.setS2(rss[3]);
+					// s1和上一次不等才进行保存
+					if (!resp.get(resp.size() - 1).getS1()
+							.equals(pushResp.getS1())) {
+						resp.add(pushResp);
+						consumerMap.put(pushResp.getCode(), resp);
+						showMap.put(pushResp.getCode(), pushResp);
+					}
 
-				// t.append(rss[5] + Config.SPLIT);
-				// t.append(rss[3] + Config.SPLIT);
+				} else {
+					final PushResp resp = new PushResp(rss[2], rss[5], rss[3]);
+
+					consumerMap.put(resp.getCode(), new LinkedList<PushResp>() {
+						{
+							add(resp);
+						}
+					});
+					showMap.put(resp.getCode(), resp);
+				}
 			}
 		}
-		return (null == t) ? null : t.toString().split(Config.SPLIT);
 	}
 
 	public void show() throws SigarException {
-		Iterator<Entry<String, PushResp>> iterator = consumerMap.entrySet()
+		Iterator<Entry<String, PushResp>> iterator = showMap.entrySet()
 				.iterator();
 		while (iterator.hasNext()) {
 			Entry<String, PushResp> entry = iterator.next();
+			// last one
 			String s = ReMix.getInfo(entry.getValue());
 			p(s);
 			// urlConn.setAllowUserInteraction(false);
 			// urlConn.setDoOutput(true);
 		}
+		showMap.clear();// 每次清理
 	}
 
 	public void getSFromConfigFile() {
@@ -119,7 +133,8 @@ public class PushServer {
 				str = properties.getProperty("code" + i);
 				if (null != str && !"".equals(str)) {
 
-					producerMap.put(str, new URL(Config.URLSTRING + getPrefix(str)));
+					producerMap.put(str, new URL(Config.URLSTRING
+							+ getPrefix(str)));
 
 				} else
 					continue;
@@ -134,6 +149,7 @@ public class PushServer {
 
 	/**
 	 * get prefix from code
+	 * 
 	 * @param code
 	 * @return
 	 */

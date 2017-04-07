@@ -7,6 +7,11 @@ import org.hyperic.sigar.SigarException;
 import pojo.PushResp;
 import config.Config;
 
+/**
+ * 
+ * @author stanomy
+ *
+ */
 public class ReMix {
 
 	public static String getInfo(String[] str) throws SigarException {

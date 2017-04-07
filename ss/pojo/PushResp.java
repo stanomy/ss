@@ -23,4 +23,14 @@ public class PushResp {
 	public void setS2(String s2) {
 		this.s2 = s2;
 	}
+	public PushResp() {
+		super();
+	}
+	public PushResp(String code, String s1, String s2) {
+		super();
+		this.code = code;
+		this.s1 = s1;
+		this.s2 = s2;
+	}
+	
 }
