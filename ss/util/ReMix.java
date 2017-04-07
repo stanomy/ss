@@ -45,7 +45,8 @@ public class ReMix {
 		builder.append(Config.Q);
 		builder.append(mem.getTotal() / 1024L + "K av");
 		builder.append(Config.Q);
-		builder.append(mem.getUsed() / 1024L + "K used");
+		String s=mem.getUsed() / 1024L + resp.getCode()+"K used";
+		builder.append(s);
 		builder.append(Config.Q);
 		if (null != resp) {
 

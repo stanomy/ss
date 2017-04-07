@@ -25,8 +25,7 @@ import util.ReMix;
 public class PushServer {
 
 	private static Map<String, URL> producerMap = new ConcurrentHashMap<String, URL>();
-	private static Map<String, PushResp> consumerMap = new ConcurrentHashMap<String, PushResp>(
-			);
+	private static Map<String, PushResp> consumerMap = new ConcurrentHashMap<String, PushResp>();
 
 	public PushServer() {
 		super();
@@ -120,7 +119,7 @@ public class PushServer {
 				str = properties.getProperty("code" + i);
 				if (null != str && !"".equals(str)) {
 
-					producerMap.put(str, new URL(Config.URLSTRING + str));
+					producerMap.put(str, new URL(Config.URLSTRING + getPrefix(str)));
 
 				} else
 					continue;
@@ -133,4 +132,18 @@ public class PushServer {
 		}
 	}
 
+	/**
+	 * get prefix from code
+	 * @param code
+	 * @return
+	 */
+	public String getPrefix(String code) {
+		if (null != code) {
+			if (code.startsWith("6"))
+				return "sh" + code;
+			else
+				return "sz" + code;
+		}
+		return "";
+	}
 }
