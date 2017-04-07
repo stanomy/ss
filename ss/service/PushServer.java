@@ -162,4 +162,13 @@ public class PushServer {
 		}
 		return "";
 	}
+
+	public void clearShow() {
+		showMap.clear();
+	}
+
+	public void clearResp() {
+		consumerMap.clear();
+
+	}
 }

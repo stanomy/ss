@@ -1,8 +1,12 @@
 package service;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
+import config.Config;
+
 public class ThreadMain {
 	private Thread t;
-	
+	private static AtomicInteger count = new AtomicInteger(0);
 
 	private void procThread() {
 		if (t == null) {
@@ -35,6 +39,12 @@ public class ThreadMain {
 						PushServer p = new PushServer();
 						try {
 							p.show();
+							count.incrementAndGet();
+							// 定时清理
+							if (count.intValue() >= Config.LIMIT) {
+								p.clearShow();
+								p.clearResp();
+							}
 							this.sleep(10 * 1000);
 						} catch (Exception e) {
 							// TODO Auto-generated catch block
