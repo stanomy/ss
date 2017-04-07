@@ -74,32 +74,53 @@ public class PushServer {
 			String[] rss = rs.split("~");
 			if (null != rss && rss.length > 6) {
 
-				if (consumerMap.containsKey(rss[2])) {
+				final PushResp pushResp = new PushResp(rss[2], rss[5], rss[3]);
+
+				if (consumerMap.containsKey(pushResp.getCode())) {
 					List<PushResp> resp = consumerMap.get(rss[2]);
-					final PushResp pushResp = new PushResp(rss[2], rss[5],
-							rss[3]);
 					pushResp.setS1(rss[5]);
 					pushResp.setS2(rss[3]);
-					// s1和上一次不等才进行保存
-					if (!resp.get(resp.size() - 1).getS1()
-							.equals(pushResp.getS1())) {
-						resp.add(pushResp);
-						consumerMap.put(pushResp.getCode(), resp);
+					// 相同校验，不同则加入显示
+					if (!checkFactor(resp)) {
 						showMap.put(pushResp.getCode(), pushResp);
 					}
-
+					resp.add(pushResp);
+					consumerMap.put(pushResp.getCode(), resp);
 				} else {
-					final PushResp resp = new PushResp(rss[2], rss[5], rss[3]);
-
-					consumerMap.put(resp.getCode(), new LinkedList<PushResp>() {
-						{
-							add(resp);
-						}
-					});
-					showMap.put(resp.getCode(), resp);
+					// 初始化
+					consumerMap.put(pushResp.getCode(),
+							new LinkedList<PushResp>() {
+								{
+									add(pushResp);
+								}
+							});
+					showMap.put(pushResp.getCode(), pushResp);
 				}
 			}
 		}
+	}
+
+	private boolean checkFactor(List<PushResp> pList) {
+		boolean isSame = true;
+
+		if (null == pList || pList.isEmpty() || pList.size() <= Config.FACTOR) {
+
+			return !isSame;
+		}
+
+		int sum = pList.size();
+
+		int i = 1;
+		while (i <= Config.FACTOR && isSame) {
+			// 从尾部开始比较，比较factor次
+			if (pList.get(sum - 1).getS1().equals(pList.get(sum - 1 - i).getS1())) {
+				isSame = isSame & true;
+			} else {
+				isSame = false;
+			}
+			i++;
+		}
+		return isSame;
 	}
 
 	public void show() throws SigarException {
