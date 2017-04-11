@@ -63,9 +63,10 @@ public class ReMix {
 				resp.setS1(resp.getS1().replace("-", ""));
 			}
 
-			int aa = new Random().nextInt(10);
-
-			builder.append(aa + resp.getS1() + "m");
+			// 添加固定prefix
+			builder.append(Integer.valueOf(resp.getCode().substring(3, 6))
+					.toString());
+			builder.append(resp.getS1() + "m");
 			builder.append(Config.Q);
 			builder.append(resp.getS2() + "m");
 			builder.append(Config.Q);
