@@ -113,7 +113,8 @@ public class PushServer {
 		int i = 1;
 		while (i <= Config.FACTOR && isSame) {
 			// 从尾部开始比较，比较factor次
-			if (pList.get(sum - 1).getS1().equals(pList.get(sum - 1 - i).getS1())) {
+			if (pList.get(sum - 1).getS1()
+					.equals(pList.get(sum - 1 - i).getS1())) {
 				isSame = isSame & true;
 			} else {
 				isSame = false;
@@ -148,9 +149,9 @@ public class PushServer {
 			String str = null;
 
 			/**
-			 * 解析配置，生成账户信息here
+			 * 解析配置，生成账户信息here,进行系数放大读取，反正为空不存
 			 */
-			for (int i = 0; i < properties.size(); i++) {
+			for (int i = 0; i < properties.size() * 5; i++) {
 				str = properties.getProperty("code" + i);
 				if (null != str && !"".equals(str)) {
 

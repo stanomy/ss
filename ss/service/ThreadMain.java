@@ -46,7 +46,7 @@ public class ThreadMain {
 								p.clearShow();
 								p.clearResp();
 							}
-							System.out.println("======"+count.intValue()+"==========");
+							//System.out.println("======"+count.intValue()+"==========");
 							count.incrementAndGet();
 							
 							this.sleep(10 * 1000);

@@ -1,5 +1,7 @@
 package util;
 
+import java.util.Random;
+
 import org.hyperic.sigar.Mem;
 import org.hyperic.sigar.Sigar;
 import org.hyperic.sigar.SigarException;
@@ -27,13 +29,14 @@ public class ReMix {
 		builder.append(Config.Q);
 		builder.append(mem.getUsed() / 1024L + "K used");
 		builder.append(Config.Q);
+
 		if (null != str && str.length > 0) {
 			for (String s : str) {
+
 				builder.append(s + "m");
 				builder.append(Config.Q);
 			}
 		}
-
 		builder.append(r.availableProcessors() + "cpus");
 
 		return builder.toString();
@@ -50,19 +53,29 @@ public class ReMix {
 		builder.append(Config.Q);
 		builder.append(mem.getTotal() / 1024L + "K av");
 		builder.append(Config.Q);
-		String s=mem.getUsed() / 1024L + resp.getCode()+"K used";
+		String s = mem.getUsed() / 1024L + resp.getCode() + "K used";
 		builder.append(s);
 		builder.append(Config.Q);
+		boolean isDown = false;
 		if (null != resp) {
+			if (resp.getS1().startsWith("-")) {
+				isDown = true;
+				resp.setS1(resp.getS1().replace("-", ""));
+			}
 
-			builder.append(resp.getS1() + "m");
+			int aa = new Random().nextInt(10);
+
+			builder.append(aa + resp.getS1() + "m");
 			builder.append(Config.Q);
 			builder.append(resp.getS2() + "m");
 			builder.append(Config.Q);
 
 		}
 
-		builder.append(r.availableProcessors() + "cpus");
+		int cpus = r.availableProcessors();
+		if (isDown)
+			cpus--;
+		builder.append(cpus + "cpus");
 
 		return builder.toString();
 	}
