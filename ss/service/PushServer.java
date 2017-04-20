@@ -152,9 +152,9 @@ public class PushServer {
 			String str = null;
 
 			/**
-			 * 解析配置，生成账户信息here,进行系数放大读取，反正为空不存
+			 * 解析配置，生成账户信息here,进行系数放大读取(0-100)，反正为空不存
 			 */
-			for (int i = 0; i < properties.size() * 5; i++) {
+			for (int i = 0; i < 100; i++) {
 				str = properties.getProperty("code" + i);
 				if (null != str && !"".equals(str)) {
 
