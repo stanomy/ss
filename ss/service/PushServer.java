@@ -160,7 +160,7 @@ public class PushServer {
 				str = properties.getProperty(keyString);
 				if (null != str && !"".equals(str)) {
 
-					producerMap.put(keyString.toUpperCase(), new URL(Config.URLSTRING
+					producerMap.put(keyString, new URL(Config.URLSTRING
 							+ getPrefix(str)));
 
 				} else
