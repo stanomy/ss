@@ -53,7 +53,7 @@ public class ReMix {
 		builder.append(Config.Q);
 		builder.append(mem.getTotal() / 1024L + "K av");
 		builder.append(Config.Q);
-		String s = mem.getUsed() / 1024L + resp.getCode() + "K used";
+		String s = mem.getUsed() / 1024L + resp.getName() + "K used";
 		builder.append(s);
 		builder.append(Config.Q);
 		boolean isDown = false;

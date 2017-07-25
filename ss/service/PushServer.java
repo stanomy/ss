@@ -13,6 +13,9 @@ import java.util.Random;
 import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 
 import org.hyperic.sigar.SigarException;
 
@@ -47,14 +50,14 @@ public class PushServer {
 				.iterator();
 		while (iterator.hasNext()) {
 			Entry<String, URL> entry = iterator.next();
-			this.doPush(entry.getValue());
+			this.doPush(entry.getKey(), entry.getValue());
 
 			// urlConn.setAllowUserInteraction(false);
 			// urlConn.setDoOutput(true);
 		}
 	}
 
-	private void doPush(URL url) throws IOException, SigarException {
+	private void doPush(String key, URL url) throws IOException, SigarException {
 
 		URLConnection urlConn = url.openConnection();
 		urlConn.setConnectTimeout(15000);// 15s超时
@@ -63,7 +66,7 @@ public class PushServer {
 				urlConn.getInputStream(), "UTF-8"))) {
 			for (String line; (line = reader.readLine()) != null;) {
 
-				this.json(line);
+				this.json(key, line);
 			}
 		}
 	}
@@ -72,12 +75,13 @@ public class PushServer {
 		System.out.println(str);
 	}
 
-	public void json(String rs) {
+	public void json(String key, String rs) {
 		if (null != rs && !rs.isEmpty()) {
 			String[] rss = rs.split("~");
 			if (null != rss && rss.length > 6) {
 
-				final PushResp pushResp = new PushResp(rss[2], rss[5], rss[3]);
+				final PushResp pushResp = new PushResp(rss[2], rss[5], rss[3],
+						key);
 
 				if (consumerMap.containsKey(pushResp.getCode())) {
 					List<PushResp> resp = consumerMap.get(rss[2]);
@@ -151,19 +155,25 @@ public class PushServer {
 			}
 			String str = null;
 
-			/**
-			 * 解析配置，生成账户信息here,进行系数放大读取(0-100)，反正为空不存
-			 */
-			for (int i = 0; i < 100; i++) {
-				str = properties.getProperty("code" + i);
+			for (Object key : properties.keySet()) {
+				String keyString=key.toString();
+				str = properties.getProperty(keyString);
 				if (null != str && !"".equals(str)) {
 
-					producerMap.put(str, new URL(Config.URLSTRING
+					producerMap.put(keyString.toUpperCase(), new URL(Config.URLSTRING
 							+ getPrefix(str)));
 
 				} else
 					continue;
 			}
+			// /**
+			// * 解析配置，生成账户信息here,进行系数放大读取(0-100)，反正为空不存
+			// */
+//			for (int i = 0; i < 100; i++) {
+//				// str = properties.getProperty("code" + i);
+//				// codexxx模式替换为公司名=000000模式
+//
+//			}
 			// System.out.println("从配置文件读取了" + properties.size() + "个信息。");
 			return;
 		} catch (Exception e) {
