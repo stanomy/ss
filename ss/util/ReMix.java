@@ -51,9 +51,15 @@ public class ReMix {
 		builder.append(Config.Q);
 		builder.append(r.freeMemory() / 1024L + "K ");
 		builder.append(Config.Q);
-		builder.append(mem.getTotal() / 1024L + "K av");
+		if (null != resp) {
+			//换算为10亿
+			builder.append(new Double(resp.getS3())/1000000 + "B av");
+		} else {
+			builder.append(mem.getTotal() / 1024L + "K av");
+		}
 		builder.append(Config.Q);
-		String s = mem.getUsed() / 1024L + resp.getName().toUpperCase() + "K used";
+		String s = mem.getUsed() / 1024L + resp.getName().toUpperCase()
+				+ "K used";
 		builder.append(s);
 		builder.append(Config.Q);
 		boolean isDown = false;

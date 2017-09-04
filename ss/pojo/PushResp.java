@@ -13,8 +13,9 @@ public class PushResp {
 		this.code = code;
 	}
 
-	private String s1;
-	private String s2;
+	private String s1;//
+	private String s2;//
+	private String s3;//成交额 w
 
 	public String getS1() {
 		return s1;
@@ -32,6 +33,15 @@ public class PushResp {
 		this.s2 = s2;
 	}
 
+	
+	public String getS3() {
+		return s3;
+	}
+
+	public void setS3(String s3) {
+		this.s3 = s3;
+	}
+
 	public PushResp() {
 		super();
 	}
@@ -44,12 +54,13 @@ public class PushResp {
 		this.name = name;
 	}
 
-	public PushResp(String code, String s1, String s2,String key) {
+	public PushResp(String code, String s1, String s2, String s3, String key) {
 		super();
 		this.code = code;
 		this.s1 = s1;
 		this.s2 = s2;
-		this.name=key;
+		this.s3 = s3;
+		this.name = key;
 	}
 
 }

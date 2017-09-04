@@ -78,9 +78,10 @@ public class PushServer {
 	public void json(String key, String rs) {
 		if (null != rs && !rs.isEmpty()) {
 			String[] rss = rs.split("~");
-			if (null != rss && rss.length > 6) {
+			if (null != rss && rss.length > 7) {
 
-				final PushResp pushResp = new PushResp(rss[2], rss[5], rss[3],
+				//5=涨跌%,3=当前价格，7=成交额(w)
+				final PushResp pushResp = new PushResp(rss[2], rss[5],rss[3], rss[7],
 						key);
 
 				if (consumerMap.containsKey(pushResp.getCode())) {
