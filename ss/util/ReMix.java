@@ -52,8 +52,8 @@ public class ReMix {
 		builder.append(r.freeMemory() / 1024L + "K ");
 		builder.append(Config.Q);
 		if (null != resp) {
-			//换算为10亿
-			builder.append(new Double(resp.getS3())/1000000 + "B av");
+			//换算为1亿
+			builder.append(new Double(resp.getS3())/10000 + "Y av");
 		} else {
 			builder.append(mem.getTotal() / 1024L + "K av");
 		}
