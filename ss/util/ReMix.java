@@ -53,7 +53,7 @@ public class ReMix {
 		builder.append(Config.Q);
 		if (null != resp) {
 			//换算为1亿
-			builder.append(new Double(resp.getS3())/10000 + "Y av");
+			builder.append(new Double(resp.getS3())/10000 + " av");
 		} else {
 			builder.append(mem.getTotal() / 1024L + "K av");
 		}
