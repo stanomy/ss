@@ -2,11 +2,15 @@ package service;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
+import service.impl.SSCodeServerImpl;
+import service.inf.SSCodeServiceInf;
 import config.Config;
 
 public class ThreadMain {
 	private Thread t;
 	private static AtomicInteger count = new AtomicInteger(0);
+	
+	private SSCodeServiceInf codeServiceInf=new SSCodeServerImpl();
 
 	private void procThread() {
 		if (t == null) {
@@ -66,9 +70,13 @@ public class ThreadMain {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-
-		new ThreadMain().procThread();
+		ThreadMain m=new ThreadMain();
+		m.codeServiceInf.initCodeService();
+		m.procThread();
 		new ThreadMain().consumThread();
+		
+//		new ThreadMain().procThread();
+//		new ThreadMain().consumThread();
 	}
 
 }

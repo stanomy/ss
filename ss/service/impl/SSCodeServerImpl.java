@@ -3,6 +3,8 @@ package service.impl;
 import java.beans.Encoder;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -37,6 +39,7 @@ public class SSCodeServerImpl implements SSCodeServiceInf {
 		this.analyzeRsToCache(rs);
 	}
 
+	
 	// 返回所有的列表
 	private String getRsFromAll_SS() throws UnsupportedEncodingException,
 			IOException {
@@ -87,5 +90,12 @@ public class SSCodeServerImpl implements SSCodeServiceInf {
 
 		new SSCodeServerImpl().initCodeService();
 
+	}
+
+
+	@Override
+	public Map<String,String> getCodeMap() {
+		// TODO Auto-generated method stub
+		return CODEMAP;
 	}
 }
